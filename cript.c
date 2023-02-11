@@ -2,83 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-void troca_colunas(char **bloco, int a, int b)
-{
-    char tmp;
-    for (int i=0; i<10; i++)
-    {
-        tmp = bloco[i][a];
-        bloco[i][a] = bloco[i][b];
-        bloco[i][b] = tmp;
-    }
-
-    return;
-}
-
-void troca_linhas(char **bloco, int a, int b)
-{
-    char *tmp;
-    
-    tmp = bloco[a];
-    bloco[a] = bloco[b];
-    bloco[b] = tmp;
-
-    return;
-}
-
-// embaralha uma metade baseada na outra
-// ex: 1234 2413
-// base = 0, chave = 4
-// fica:
-// 3412 2413
-void troca_nums(int *seq, int base, int chave)
-{
-    int tmp;
-    int a, b;
-    for (int j=0; j<(10/2); j++)
-    {
-        a = seq[chave + j*2] + base;
-        b = seq[chave + j*2 + 1] + base;
-
-        tmp = seq[a];
-        seq[a] = seq[b];
-        seq[b] = tmp;
-    }
-
-    return;
-}
-
-void sequencia(char *chave, int *seq)
-{
-    int min, min2;
-    int min_pos, min_pos2;
-
-    for (int i=0; i<10; i++)
-    {
-        min = min2 = __INT_MAX__;
-        min_pos = -1;
-
-        for (int j=0; j<10; j++)
-        {
-            if (chave[j] < min && seq[j] == -1)
-            {
-                min = chave[j];
-                min_pos = j;
-            }
-
-            if (chave[j+10] < min2 && seq[j+10] == -1)
-            {
-                min2 = chave[j+10];
-                min_pos2 = j+10;
-            }
-        }
-
-        seq[min_pos] = seq[min_pos2] = i;
-
-    }
-
-}
+#include "utils.h"
 
 int main()
 {
@@ -90,8 +14,16 @@ int main()
 
     char s[1024*10];
     printf("Enter a string to encode: ");
-    // fgets(s, 1024*10, stdin);
     scanf("%s", s);
+
+    int len = strlen(s);
+    char ultima = s[len-1];
+    s[len] = ultima;
+    s[len+1] = ultima;
+    s[len+2] = ultima;
+    s[len+3] = '\0';
+
+    // printf("%s\n", s);
 
     char k[(10*2)+1];
     printf("Enter key: ");
@@ -103,9 +35,9 @@ int main()
 
     sequencia(k, seq);
 
-    for (int i=0; i<(10*2); i++)
-        printf("%d ", seq[i]);
-    printf("\n");
+    // for (int i=0; i<(10*2); i++)
+    //     printf("%d ", seq[i]);
+    // printf("\n");
 
 
     char *bloco[10];
