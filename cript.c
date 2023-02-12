@@ -13,9 +13,10 @@ int main()
     cToStr[1] = '\0';
 
     char s[1024*10];
-    printf("Enter a string to encode: ");
+    printf("Insira a mensagem a ser criptografada (somente [a-z]): ");
     scanf("%s", s);
 
+    // prepara o sinal de final da string para a decodificacao
     int len = strlen(s);
     char ultima = s[len-1];
     s[len] = ultima;
@@ -23,10 +24,9 @@ int main()
     s[len+2] = ultima;
     s[len+3] = '\0';
 
-    // printf("%s\n", s);
 
     char k[(10*2)+1];
-    printf("Enter key: ");
+    printf("Insira a chave (pelo menos 20 char): ");
     scanf("%20s", k);
 
 
@@ -34,10 +34,6 @@ int main()
     memset(seq, -1, sizeof(seq));
 
     sequencia(k, seq);
-
-    // for (int i=0; i<(10*2); i++)
-    //     printf("%d ", seq[i]);
-    // printf("\n");
 
 
     char *bloco[10];
@@ -78,7 +74,7 @@ int main()
             else
             {
                 for (int j=0; j<(10/2); j++)
-                    troca_linhas(bloco, seq[j*2], seq[(j*2)+1]);
+                    troca_linhas(bloco, seq[(j*2)+10], seq[(j*2)+1+10]);
 
                 troca_nums(seq, 10, 0);
             }
@@ -102,7 +98,7 @@ int main()
     }
     
 
-    printf("%s\n", nova);
+    printf("Mensagem criptografada:\n\t%s\n", nova);
 
           
     for (int i=0; i<10; i++)

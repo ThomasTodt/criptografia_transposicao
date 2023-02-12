@@ -13,3 +13,6 @@ void troca_colunas(char **bloco, int a, int b);
 // ex: abc ere
 // vira: 012 021
 void sequencia(char *chave, int *seq);
+
+// copia um array de inteiros
+void copy_array(int *source, int *dest, int size);

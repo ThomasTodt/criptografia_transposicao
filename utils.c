@@ -76,3 +76,10 @@ void sequencia(char *chave, int *seq)
     }
 
 }
+
+void copy_array(int *source, int *dest, int size) 
+{
+    for (int i = 0; i < size; i++) {
+        dest[i] = source[i];
+    }
+}

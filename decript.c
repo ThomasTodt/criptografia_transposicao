@@ -11,11 +11,11 @@ int main()
     cToStr[1] = '\0';
 
     char cod[1024*10];
-    printf("Enter a string to decode: ");
+    printf("Insira a mensagem a ser descriptografada: ");
     scanf("%s", cod);
 
     char k[(10*2)+1];
-    printf("Enter key: ");
+    printf("Insira a chave: ");
     scanf("%20s", k);
 
     int seq[(10*2)];
@@ -33,17 +33,12 @@ int main()
     }
 
     int len = strlen(cod);
-    // int qtd_blocos = (len / 100);
     int l = 0; // para leitura do bloco                                           
     while (l < len)
     {
-        // faz a chave se igualar ao estado no final da codificação em cada bloco
-        // for (int i=0; i<10; i++)
-        //     (i % 2) ? troca_nums(seq, 0, 10) : troca_nums(seq, 10, 0);
-
         // restaura a sequencia de acordo com o comeco do proximo bloco
         if (l != 0)
-            strcpy(seq, copia_seq);
+            copy_array(copia_seq, seq, (10*2));
 
         // le o bloco
         for (int i=0; i<10; i++)
@@ -59,23 +54,23 @@ int main()
         }
 
         // guarda a sequencia ao final na copia
-        strcpy(copia_seq, seq);
+        copy_array(seq, copia_seq, (10*2));
 
-        for (int i=0; i<10; i++)
+        for (int i=9; i>=0; i--)
         {
             if (i % 2)
             {
+                troca_nums(seq, 0, 10);
+
                 for (int j=0; j<(10/2); j++)
                     troca_colunas(bloco, seq[j*2], seq[(j*2)+1]);
-
-                troca_nums(seq, 10, 0);
             }
             else
             {
-                for (int j=0; j<(10/2); j++)
-                    troca_linhas(bloco, seq[j*2], seq[(j*2)+1]);
+                troca_nums(seq, 10, 0);
 
-                troca_nums(seq, 0, 10);
+                for (int j=0; j<(10/2); j++)
+                    troca_linhas(bloco, seq[(j*2)+10], seq[(j*2)+1+10]);
             }
         }
 
@@ -93,13 +88,32 @@ int main()
 
     }
 
-    
-    printf("%s\n", decod);
+
+    // procura pelo sinal de final da mensagem original
+    int count = 1;
+    int final = -1;
+    for (int i = 1; i < len; i++) {
+
+        if (decod[i] == decod[i - 1])
+            count++;      
+        else 
+            count = 1;
+
+        if (count == 4) 
+        {
+            final = i - 3;
+            break;
+        }
+    }
+
+    decod[final+1] = '\0';
+
+
+    printf("Mensagem descriptografada:\n\t%s\n", decod);
 
 
     for (int i=0; i<10; i++)
         free(bloco[i]);
-
 
     return 0;
 }
